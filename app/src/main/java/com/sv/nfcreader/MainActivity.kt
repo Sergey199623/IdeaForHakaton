@@ -8,11 +8,16 @@ import android.nfc.NfcAdapter
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
+import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
 import java.io.File
 
+
 class MainActivity : Activity() {
+
+    private var mParentPath: File? = null
+    private var mIntent: Intent? = null
 
     private var nfcAdapter: NfcAdapter? = null
     private val pm: PackageManager = packageManager
@@ -46,7 +51,8 @@ class MainActivity : Activity() {
             } nfcAdapter?.isNdefPushEnabled == true -> {
             // Если Android Beam отключен, показываем настройки для включения Android Beam
                 Toast.makeText(
-                    this, getString(R.string.need_enable_android_beam), Toast.LENGTH_SHORT)
+                    this, getString(R.string.need_enable_android_beam), Toast.LENGTH_SHORT
+                )
                     .show()
                 startActivity(Intent(Settings.ACTION_NFCSHARING_SETTINGS))
             } else -> {
@@ -67,5 +73,7 @@ class MainActivity : Activity() {
         }
     }
 
-    fun onAcceptData(view: View) {}
+    fun onAcceptData(view: View) {
+
+    }
 }
