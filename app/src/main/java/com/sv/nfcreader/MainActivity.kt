@@ -8,11 +8,9 @@ import android.nfc.NfcAdapter
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
-import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
 import java.io.File
-
 
 class MainActivity : Activity() {
 
@@ -20,12 +18,12 @@ class MainActivity : Activity() {
     private var mIntent: Intent? = null
 
     private var nfcAdapter: NfcAdapter? = null
-    private val pm: PackageManager = packageManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val pm = this.packageManager
         // Проверяем наличие NFC на устройстве
         if (!pm.hasSystemFeature(PackageManager.FEATURE_NFC)) {
             Toast.makeText(this, getString(R.string.not_has_nfc_hardware), Toast.LENGTH_SHORT)
