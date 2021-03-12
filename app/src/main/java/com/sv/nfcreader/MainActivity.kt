@@ -31,7 +31,7 @@ class MainActivity : Activity() {
         }
     }
 
-    fun onSendFile(view: View) {
+    fun onSendData(view: View) {
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
 
@@ -40,7 +40,6 @@ class MainActivity : Activity() {
             nfcAdapter?.isEnabled == true -> {
 
                 // Если NFC отключен, показываем окно настроек для включения NFC
-
                 Toast.makeText(this, getString(R.string.un_enable_nfc), Toast.LENGTH_SHORT)
                     .show()
                 startActivity(Intent(Settings.ACTION_NFC_SETTINGS))
@@ -67,4 +66,6 @@ class MainActivity : Activity() {
             }
         }
     }
+
+    fun onAcceptData(view: View) {}
 }
