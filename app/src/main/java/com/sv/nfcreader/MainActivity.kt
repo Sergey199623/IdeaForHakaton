@@ -27,10 +27,10 @@ class MainActivity : Activity() {
         // Проверяем наличие NFC на устройстве
         if (!pm.hasSystemFeature(PackageManager.FEATURE_NFC)) {
             Toast.makeText(this, getString(R.string.not_has_nfc_hardware), Toast.LENGTH_SHORT)
-                .show()
+                    .show()
         } else {
             Toast.makeText(this, getString(R.string.enable_android_nfc), Toast.LENGTH_SHORT)
-                .show()
+                    .show()
         }
     }
 
@@ -44,30 +44,30 @@ class MainActivity : Activity() {
 
                 // Если NFC отключен, показываем окно настроек для включения NFC
                 Toast.makeText(this, getString(R.string.un_enable_nfc), Toast.LENGTH_SHORT)
-                    .show()
+                        .show()
                 startActivity(Intent(Settings.ACTION_NFC_SETTINGS))
             } nfcAdapter?.isNdefPushEnabled == true -> {
             // Если Android Beam отключен, показываем настройки для включения Android Beam
-                Toast.makeText(
+            Toast.makeText(
                     this, getString(R.string.need_enable_android_beam), Toast.LENGTH_SHORT
-                )
+            )
                     .show()
-                startActivity(Intent(Settings.ACTION_NFCSHARING_SETTINGS))
-            } else -> {
+            startActivity(Intent(Settings.ACTION_NFCSHARING_SETTINGS))
+        } else -> {
 
-                // Файл для отправки - пока стоит заглушка
-                val fileName = "wallpaper.png"
+            // Файл для отправки - пока стоит заглушка
+            val fileName = "wallpaper.png"
 
-                // Получить путь к общедоступному каталогу изображений пользователя
-                val fileDirectory = Environment.getExternalStoragePublicDirectory(
+            // Получить путь к общедоступному каталогу изображений пользователя
+            val fileDirectory = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_PICTURES
-                )
+            )
 
-                // Создаем новый файл, используя указанный каталог и имя
-                val fileToTransfer = File(fileDirectory, fileName)
-                fileToTransfer.setReadable(true, false)
-                nfcAdapter?.setBeamPushUris(arrayOf(Uri.fromFile(fileToTransfer)), this)
-            }
+            // Создаем новый файл, используя указанный каталог и имя
+            val fileToTransfer = File(fileDirectory, fileName)
+            fileToTransfer.setReadable(true, false)
+            nfcAdapter?.setBeamPushUris(arrayOf(Uri.fromFile(fileToTransfer)), this)
+        }
         }
     }
 
