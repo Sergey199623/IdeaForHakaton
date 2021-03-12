@@ -4,15 +4,90 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/name_app"
+        android:textColor="@color/button_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="60dp"
+        android:text="@string/tap_to_accept_another_user_s_data"
+        android:textColor="@color/dark_blue"
+        app:layout_constraintBottom_toTopOf="@+id/btnSend"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginStart="20dp"
+        android:text="@string/tap_to_share_your_data_with_another_user"
+        android:textColor="@color/dark_blue"
+        app:layout_constraintBottom_toTopOf="@+id/btnAccept"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnSend" />
+
+    <Button
+        android:id="@+id/btnSend"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:backgroundTint="@color/button_blue"
+        android:onClick="onSendData"
+        android:text="@string/send"
+        android:textColor="@color/background"
+        app:cornerRadius="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnAccept"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/sendImage"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/btnAccept"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:backgroundTint="@color/button_blue"
+        android:onClick="onAcceptData"
+        android:text="@string/accept"
+        android:textColor="@color/background"
+        app:cornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/acceptImage"
+        app:layout_constraintTop_toBottomOf="@id/btnSend" />
+
+    <ImageView
+        android:id="@+id/sendImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/outline_send_to_mobile_20"
+        app:layout_constraintBottom_toTopOf="@+id/acceptImage"
+        app:layout_constraintEnd_toStartOf="@id/btnSend"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        android:contentDescription="@string/todo" />
+
+    <ImageView
+        android:id="@+id/acceptImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/outline_security_update_20"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnAccept"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sendImage"
+        android:contentDescription="@string/todo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
