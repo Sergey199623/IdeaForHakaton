@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">NFCReader</string>
+    <string name="not_has_nfc_hardware">Устройство не оборудовано NFC</string>
+    <string name="enable_android_nfc">Устройство поддерживает NFC</string>
+    <string name="un_enable_nfc">Режим NFC не подключен</string>
+    <string name="need_enable_android_beam">Подключите Android Beam</string>
 </resources>
