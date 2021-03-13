@@ -3,11 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/fragmentDataDetails"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:name="androidx.navigation.fragment.NavHostFragment"
     app:navGraph="@navigation/mobile_navigation"
     app:defaultNavHost="true"
-    android:background="#191926">
+    android:background="@color/background">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -22,6 +22,19 @@
             android:layout_height="wrap_content"
             android:background="#191926" >
 
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Received data"
+                android:textColor="@color/button_blue"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toTopOf="@id/rv_data"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_data"
                 android:layout_width="match_parent"
@@ -29,7 +42,6 @@
                 android:orientation="vertical"
                 android:scrollbars="vertical"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="2"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
