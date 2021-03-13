@@ -127,14 +127,23 @@ class FragmentMain : Fragment() {
 
                 val gson = Gson()
                 val list = listOf(
-                    Account(1, "vk", "https://ibb.co/KDBVgX3", "https://vk.com/elonmusk"),
+                    Account(
+                        1,
+                        "vk",
+                        "https://ibb.co/KDBVgX3",
+                        "https://vk.com/elonmusk"),
                     Account(
                         2,
                         "facebook",
                         "https://ibb.co/LN979kn",
                         "https://www.facebook.com/elonreevesmusk/"
                     ),
-                    Account(3, "twitter", "https://ibb.co/sVG9qhp", "https://twitter.com/elonmusk")
+                    Account(
+                        3,
+                        "twitter",
+                        "https://ibb.co/sVG9qhp",
+                        "https://twitter.com/elonmusk"
+                    )
                 )
                 val json = gson.toJson(list)
                 Log.d("M_FragmentMain", json)
@@ -174,7 +183,6 @@ class FragmentMain : Fragment() {
                 val fileUriCallback = FileUriCallback()
 //            // Set the dynamic callback for URI requests.
                 nfcAdapter?.setBeamPushUrisCallback(fileUriCallback, activity)
-
             }
         }
     }
