@@ -43,7 +43,7 @@ class FragmentMain : Fragment() {
 
         androidBeamAvailable = when {
             activity?.packageManager?.hasSystemFeature(PackageManager.FEATURE_NFC) == true -> {
-                Toast.makeText(activity, getString(R.string.not_has_nfc_hardware), Toast.LENGTH_SHORT)
+                Toast.makeText(activity, getString(R.string.enable_android_nfc), Toast.LENGTH_SHORT)
                     .show()
                 false
             }
@@ -52,7 +52,7 @@ class FragmentMain : Fragment() {
                 false
             }
             else -> {
-                Toast.makeText(activity, getString(R.string.enable_android_nfc), Toast.LENGTH_SHORT)
+                Toast.makeText(activity, getString(R.string.not_has_nfc_hardware), Toast.LENGTH_SHORT)
                     .show()
                 initNfcAdapter()
                 true
