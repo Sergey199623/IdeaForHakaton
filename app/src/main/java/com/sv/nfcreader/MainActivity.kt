@@ -1,25 +1,29 @@
 package com.sv.nfcreader
 
 import android.app.Activity
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.nfc.NfcAdapter
+import android.nfc.NfcEvent
+import android.nfc.NfcManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
+import android.util.Log
 import android.widget.Button
 import android.widget.Toast
+import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior.getTag
 import java.io.File
 
 class MainActivity : Activity() {
 
-    private var mParentPath: File? = null
-    private var mIntent: Intent? = null
-
     private var nfcAdapter: NfcAdapter? = null
     private var androidBeamAvailable = false
+    private val fileUris = mutableListOf<Uri>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,11 +39,12 @@ class MainActivity : Activity() {
                 .show()
             false
         } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            androidBeamAvailable = false
             false
         } else {
             Toast.makeText(this, getString(R.string.enable_android_nfc), Toast.LENGTH_SHORT)
                     .show()
-            nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+            initNfcAdapter()
             true
         }
 
@@ -52,9 +57,37 @@ class MainActivity : Activity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        enableNfcForegroundDispatch()
+    }
+
+    override fun onPause() {
+        disableNfcForegroundDispatch()
+        super.onPause()
+    }
+
+    private fun enableNfcForegroundDispatch() {
+        try {
+            val intent = Intent(this, javaClass).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            val nfcPendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
+            nfcAdapter?.enableForegroundDispatch(this, nfcPendingIntent, null, null)
+        } catch (ex: IllegalStateException) {
+            Log.e(TAG, "Error enabling NFC foreground dispatch", ex)
+        }
+    }
+
+    private fun disableNfcForegroundDispatch() {
+        try {
+            nfcAdapter?.disableForegroundDispatch(this)
+        } catch (ex: IllegalStateException) {
+            Log.e(TAG, "Error disabling NFC foreground dispatch", ex)
+        }
+    }
+
     private fun onSendData() {
 
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+        initNfcAdapter()
 
         // Проверка, активен ли NFC
         when {
@@ -83,12 +116,37 @@ class MainActivity : Activity() {
                 // Создаем новый файл, используя указанный каталог и имя
                 val fileToTransfer = File(fileDirectory, fileName)
                 fileToTransfer.setReadable(true, false)
-                nfcAdapter?.setBeamPushUris(arrayOf(Uri.fromFile(fileToTransfer)), this)
+
+                /*
+                    * Instantiate a new FileUriCallback to handle requests for URIs
+                    * Нужный коллбэк внизу
+             */
+//            fileUriCallback = FileUriCallback()
+//            // Set the dynamic callback for URI requests.
+//            nfcAdapter?.setBeamPushUrisCallback(fileUriCallback, this@MainActivity)
             }
+        }
+    }
+
+    private fun initNfcAdapter() {
+        val nfcManager = getSystemService(Context.NFC_SERVICE) as NfcManager
+        nfcAdapter = nfcManager.defaultAdapter
+    }
+
+    private inner class FileUriCallback : NfcAdapter.CreateBeamUrisCallback {
+        /**
+         * Create content URIs as needed to share with another device
+         */
+        override fun createBeamUris(event: NfcEvent): Array<Uri> {
+            return fileUris.toTypedArray()
         }
     }
 
     private fun onAcceptData() {
 
+    }
+
+    companion object {
+        const val TAG: String = "NFC"
     }
 }
