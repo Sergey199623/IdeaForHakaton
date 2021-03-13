@@ -14,16 +14,17 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior.getTag
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.sv.nfcreader.data.AccountTemp
 import com.sv.nfcreader.data.repo.Repository
+import com.sv.nfcreader.fragments.FragmentDataDetails
+import com.sv.nfcreader.fragments.MainFragment
 import java.io.File
 
-class MainActivity : Activity() {
+class MainActivity : AppCompatActivity() {
 
     private var nfcAdapter: NfcAdapter? = null
     private var androidBeamAvailable = false
@@ -33,9 +34,19 @@ class MainActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val btnSendData: Button = findViewById(R.id.btnSend)
-        val btnAcceptData: Button = findViewById(R.id.btnAccept)
+//        val btnSendData: Button = findViewById(R.id.btnSend)
+    //   val btnAcceptData: Button = findViewById(R.id.btnAccept)
 
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.main_container, MainFragment.newInstance())
+                .commit()
+
+        }
+
+        findViewById<Button>(R.id.btnAccept)?.setOnClickListener {
+            onAcceptData()
+        }
 //        val pm = this.packageManager
         // Проверяем наличие NFC на устройстве
         androidBeamAvailable = if (!packageManager.hasSystemFeature(PackageManager.FEATURE_NFC)) {
@@ -52,13 +63,7 @@ class MainActivity : Activity() {
             true
         }
 
-        btnSendData.setOnClickListener() {
-            onSendData()
-        }
 
-        btnAcceptData.setOnClickListener() {
-            onAcceptData()
-        }
     }
 
     override fun onResume() {
@@ -113,13 +118,13 @@ class MainActivity : Activity() {
             else -> {
                 // Файл для отправки - пока стоит заглушка
 
-                val gson = Gson()
-                val list = listOf(
-                    AccountTemp(1, "https://vk.com/elonmusk"),
-                    AccountTemp(2, "https://www.facebook.com/elonreevesmusk/"),
-                    AccountTemp(3, "https://twitter.com/elonmusk")
-                )
-                val json = gson.toJson(list)
+               // val gson = Gson()
+//                val list = listOf(
+//                    AccountTemp(1, "https://vk.com/elonmusk"),
+//                    AccountTemp(2, "https://www.facebook.com/elonreevesmusk/"),
+//                    AccountTemp(3, "https://twitter.com/elonmusk")
+//                )
+               // val json = gson.toJson(list)
 
 
                 val fileName = "wallpaper.png"
@@ -161,17 +166,24 @@ class MainActivity : Activity() {
     }
 
     private fun onAcceptData() {
-//        Log.d("M_MainActivity", "onAccept")
-        val gson = Gson()
-        val list = Repository.getAccount()
-        val json = gson.toJson(list)
+////        Log.d("M_MainActivity", "onAccept")
+//        val gson = Gson()
+//        val list = Repository.getAccount()
+//        val json = gson.toJson(list)
 //        Log.d("M_MainActivity", json)
-        val sType = object : TypeToken<List<AccountTemp>>() {}.type
-        val otherList = gson.fromJson<List<AccountTemp>>(json, sType)
-        Log.d("M_MainActivity", "out = $otherList")
+//        val sType = object : TypeToken<List<AccountTemp>>() {}.type
+//        val otherList = gson.fromJson<List<AccountTemp>>(json, sType)
+//        Log.d("M_MainActivity", "out = $otherList")
+
+        supportFragmentManager.beginTransaction()
+            .add(R.id.main_container, FragmentDataDetails.newInstance())
+            .addToBackStack(null)
+            .commit()
     }
 
     companion object {
         const val TAG: String = "NFC"
     }
+
+
 }

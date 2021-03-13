@@ -35,4 +35,10 @@ class FragmentDataDetails : Fragment() {
         adapter.bindData(Repository().getAccounts())
         adapter.notifyDataSetChanged()
     }
+
+    companion object {
+        fun newInstance(): FragmentDataDetails {
+            return FragmentDataDetails()
+        }
+    }
 }
