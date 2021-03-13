@@ -165,7 +165,7 @@ class MainActivity : Activity() {
         val gson = Gson()
         val list = Repository.getAccounts()
         val json = gson.toJson(list)
-//        Log.d("M_MainActivity", json)
+        Log.d("M_MainActivity", json)
         val sType = object : TypeToken<List<AccountTemp>>() {}.type
         val otherList = gson.fromJson<List<AccountTemp>>(json, sType)
         Log.d("M_MainActivity", "out = $otherList")
