@@ -121,9 +121,11 @@ class MainActivity : Activity() {
                     * Instantiate a new FileUriCallback to handle requests for URIs
                     * Нужный коллбэк внизу
              */
-//            fileUriCallback = FileUriCallback()
+
+            val fileUriCallback = FileUriCallback()
 //            // Set the dynamic callback for URI requests.
-//            nfcAdapter?.setBeamPushUrisCallback(fileUriCallback, this@MainActivity)
+            nfcAdapter?.setBeamPushUrisCallback(fileUriCallback, this@MainActivity)
+
             }
         }
     }
