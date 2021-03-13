@@ -24,6 +24,7 @@ import com.google.gson.reflect.TypeToken
 import com.sv.nfcreader.R
 import com.sv.nfcreader.data.Account
 import com.sv.nfcreader.data.repo.Repository
+import kotlinx.coroutines.delay
 import java.io.File
 
 class FragmentMain : Fragment() {
@@ -65,9 +66,16 @@ class FragmentMain : Fragment() {
 
         val onAcceptData = view.findViewById<View>(R.id.btnAccept)
         val onSendData = view.findViewById<View>(R.id.btnSend)
+        val progressBar = view.findViewById<View>(R.id.progressBar)
+
         onSendData?.setOnClickListener {
+            android.os.Handler().postDelayed({ progressBar.visibility = View.VISIBLE; }, 1000)
             onSendData()
+            android.os.Handler().postDelayed({ progressBar.visibility = View.GONE; Toast.makeText(
+                activity, "Отправка завершена!", Toast.LENGTH_SHORT)
+                .show() }, 5000)
         }
+
         onAcceptData?.setOnClickListener {
             findNavController().navigate(R.id.fragmentDataDetails)
         }
@@ -102,7 +110,6 @@ class FragmentMain : Fragment() {
     }
 
     private fun onSendData() {
-
         initNfcAdapter()
 
         // Проверка, активен ли NFC
