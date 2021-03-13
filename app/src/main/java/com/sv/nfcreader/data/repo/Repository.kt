@@ -2,12 +2,12 @@ package com.sv.nfcreader.data.repo
 
 import com.sv.nfcreader.data.*
 
-class Repository {
+object Repository {
     fun getAccounts(): List<Account> {
         return listOf(
-            Vk("https://ibb.co/KDBVgX3", 1, "https://vk.com/durov"),
-            Facebook("https://ibb.co/LN979kn",2, "https://ru-ru.facebook.com/durov"),
-            Twitter("https://ibb.co/sVG9qhp",3, "https://twitter.com/durov")
+            Account(1, "vk", "https://ibb.co/KDBVgX3", "https://vk.com/durov"),
+            Account(2, "facebook", "https://ibb.co/LN979kn", "https://ru-ru.facebook.com/durov"),
+            Account(3, "twitter", "https://ibb.co/sVG9qhp", "https://twitter.com/durov")
         )
     }
 }

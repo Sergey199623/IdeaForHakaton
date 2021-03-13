@@ -32,7 +32,7 @@ class FragmentDataDetails : Fragment() {
     }
 
     private fun updateData() {
-        adapter.bindData(Repository().getAccounts())
+        adapter.bindData(Repository.getAccounts())
         adapter.notifyDataSetChanged()
     }
 }

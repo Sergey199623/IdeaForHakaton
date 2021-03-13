@@ -16,16 +16,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.sv.nfcreader.R
-import com.sv.nfcreader.data.AccountTemp
+import com.sv.nfcreader.data.Account
 import com.sv.nfcreader.data.repo.Repository
 import java.io.File
 
@@ -123,9 +120,9 @@ class FragmentMain : Fragment() {
 
                 val gson = Gson()
                 val list = listOf(
-                    AccountTemp(1, "https://vk.com/elonmusk"),
-                    AccountTemp(2, "https://www.facebook.com/elonreevesmusk/"),
-                    AccountTemp(3, "https://twitter.com/elonmusk")
+                    Account(1,"vk","https://ibb.co/KDBVgX3", "https://vk.com/elonmusk"),
+                    Account(2, "facebook", "https://ibb.co/LN979kn","https://www.facebook.com/elonreevesmusk/"),
+                    Account(3, "twitter", "https://ibb.co/sVG9qhp", "https://twitter.com/elonmusk")
                 )
                 val json = gson.toJson(list)
 
@@ -174,8 +171,8 @@ class FragmentMain : Fragment() {
         val list = Repository.getAccounts()
         val json = gson.toJson(list)
         Log.d("M_MainActivity", json)
-        val sType = object : TypeToken<List<AccountTemp>>() {}.type
-        val otherList = gson.fromJson<List<AccountTemp>>(json, sType)
+        val sType = object : TypeToken<List<Account>>() {}.type
+        val otherList = gson.fromJson<List<Account>>(json, sType)
         Log.d("M_MainActivity", "out = $otherList")
     }
 

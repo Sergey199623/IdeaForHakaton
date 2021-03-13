@@ -1,8 +1,8 @@
 package com.sv.nfcreader.data
 
-abstract class Account {
-
-    abstract val avatar: String
-    abstract val id: Int
-    abstract val path: String
-}
+data class Account(
+    val id: Int,
+    val type: String,
+    val avatar: String,
+    val path: String
+)

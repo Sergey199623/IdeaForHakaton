@@ -1,31 +1,10 @@
 package com.sv.nfcreader
 
-import android.app.Activity
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.net.Uri
-import android.nfc.NfcAdapter
-import android.nfc.NfcEvent
-import android.nfc.NfcManager
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.Settings
-import android.util.Log
-import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior.getTag
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.sv.nfcreader.data.AccountTemp
-import com.sv.nfcreader.data.repo.Repository
 import com.sv.nfcreader.fragments.FragmentMain
-import java.io.File
 
 class MainActivity :  AppCompatActivity() {
 
