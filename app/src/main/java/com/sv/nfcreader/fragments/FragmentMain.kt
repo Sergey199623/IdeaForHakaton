@@ -44,18 +44,22 @@ class FragmentMain : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        androidBeamAvailable = if (activity?.packageManager?.hasSystemFeature(PackageManager.FEATURE_NFC) == true) {
-            Toast.makeText(activity, getString(R.string.not_has_nfc_hardware), Toast.LENGTH_SHORT)
-                .show()
-            false
-        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            androidBeamAvailable = false
-            false
-        } else {
-            Toast.makeText(activity, getString(R.string.enable_android_nfc), Toast.LENGTH_SHORT)
-                .show()
-            initNfcAdapter()
-            true
+        androidBeamAvailable = when {
+            activity?.packageManager?.hasSystemFeature(PackageManager.FEATURE_NFC) == true -> {
+                Toast.makeText(activity, getString(R.string.not_has_nfc_hardware), Toast.LENGTH_SHORT)
+                    .show()
+                false
+            }
+            Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1 -> {
+                androidBeamAvailable = false
+                false
+            }
+            else -> {
+                Toast.makeText(activity, getString(R.string.enable_android_nfc), Toast.LENGTH_SHORT)
+                    .show()
+                initNfcAdapter()
+                true
+            }
         }
 
         val onAcceptData = view.findViewById<View>(R.id.btnAccept)
