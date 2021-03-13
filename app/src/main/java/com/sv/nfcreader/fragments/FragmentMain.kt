@@ -157,8 +157,9 @@ class FragmentMain : Fragment() {
                 // Get a URI for the File and add it to the list of URIs
                 val fileUri = Uri.fromFile(requestFile)
                 if (fileUri != null) {
-                    mFileUris[0] = fileUri
-                    Log.d("M_FragmentMain", mFileUris[0].toString())
+                    fileUris.add(fileUri)
+//                    mFileUris[0] = fileUri
+                    Log.d("M_FragmentMain",fileUris.toString())
                 } else {
                     Log.e("M_FragmentMain", "No File URI available for file.")
                 }
