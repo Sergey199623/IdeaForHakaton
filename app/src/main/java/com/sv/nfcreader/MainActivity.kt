@@ -163,7 +163,7 @@ class MainActivity : Activity() {
     private fun onAcceptData() {
 //        Log.d("M_MainActivity", "onAccept")
         val gson = Gson()
-        val list = Repository.getAccount()
+        val list = Repository.getAccounts()
         val json = gson.toJson(list)
 //        Log.d("M_MainActivity", json)
         val sType = object : TypeToken<List<AccountTemp>>() {}.type
