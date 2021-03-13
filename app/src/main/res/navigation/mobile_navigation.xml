@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/fragmentMain">
+
+    <fragment
+        android:id="@+id/fragmentMain"
+        android:name="com.sv.nfcreader.fragments.FragmentMain"
+        android:label="FragmentMain"
+        tools:layout="@layout/fragment_main">
+
+        <action
+            android:id="@+id/next_action"
+            app:destination="@id/fragmentDataDetails" />
+
+        <action
+            android:id="@+id/action_fragmentMoviesList_to_fragmentMoviesDetails"
+            app:destination="@id/fragmentDataDetails" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentDataDetails"
+        android:name="com.sv.nfcreader.fragments.FragmentDataDetails"
+        android:label="FragmentDataDetails"
+        tools:layout="@layout/fragment_data_details"/>
+
+    <activity
+        android:id="@+id/activity_main"
+        android:name="com.sv.nfcreader.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+
+</navigation>
