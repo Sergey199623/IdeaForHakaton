@@ -52,10 +52,10 @@ class ActivityLoadDataFromNFC : AppCompatActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         val tag = intent.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
-        GetDataFromTag(tag, intent)
+        getDataFromTag(tag, intent)
     }
 
-    private fun GetDataFromTag(tag: Tag?, intent: Intent) {
+    private fun getDataFromTag(tag: Tag?, intent: Intent) {
         val ndef = Ndef.get(tag)
         try {
             ndef.connect()

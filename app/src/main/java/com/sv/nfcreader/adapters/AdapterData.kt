@@ -1,5 +1,7 @@
 package com.sv.nfcreader.adapters
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,6 +54,11 @@ class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .into(avatar)
         id.text = data.id.toString()
         path.text = data.path
+        path.setOnClickListener {
+            val adress = Uri.parse(data.path)
+            val intent = Intent(Intent.ACTION_VIEW, adress)
+            context.startActivity(intent)
+        }
     }
 }
 
