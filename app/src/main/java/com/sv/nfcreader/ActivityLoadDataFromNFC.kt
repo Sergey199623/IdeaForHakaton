@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
-
 class ActivityLoadDataFromNFC : AppCompatActivity() {
 
     override fun attachBaseContext(newBase: Context) {
