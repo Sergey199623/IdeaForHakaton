@@ -10,21 +10,23 @@ import android.nfc.NfcEvent
 import android.nfc.NfcManager
 import android.os.Build
 import android.os.Bundle
-
 import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+
 import com.sv.nfcreader.R
 import com.sv.nfcreader.data.Account
 import com.sv.nfcreader.data.repo.Repository
-import kotlinx.coroutines.delay
+
 import java.io.File
 
 class FragmentMain : Fragment() {
@@ -73,7 +75,8 @@ class FragmentMain : Fragment() {
             onSendData()
             android.os.Handler().postDelayed({ progressBar.visibility = View.GONE; Toast.makeText(
                 activity, "Отправка завершена!", Toast.LENGTH_SHORT)
-                .show() }, 5000)
+                .show() },
+                5000)
         }
 
         onAcceptData?.setOnClickListener {
@@ -110,6 +113,7 @@ class FragmentMain : Fragment() {
     }
 
     private fun onSendData() {
+
         initNfcAdapter()
 
         // Проверка, активен ли NFC
@@ -155,8 +159,6 @@ class FragmentMain : Fragment() {
                 val json = gson.toJson(list)
                 Log.d("M_FragmentMain", json)
 
-                val mFileUris = arrayOfNulls<Uri>(10)
-//                val transferFile = "transferimage.jpg"
                 val extDir: File? = requireContext().getExternalFilesDir(null)
                 val requestFile = File(extDir, json)
                 requestFile.setReadable(true, false)
@@ -165,28 +167,15 @@ class FragmentMain : Fragment() {
                 val fileUri = Uri.fromFile(requestFile)
                 if (fileUri != null) {
                     fileUris.add(fileUri)
-//                    mFileUris[0] = fileUri
                     Log.d("M_FragmentMain",fileUris.toString())
                 } else {
                     Log.e("M_FragmentMain", "No File URI available for file.")
                 }
 
-
-//                val fileName = "wallpaper.png"
-
-                // Получить путь к общедоступному каталогу изображений пользователя
-//                val fileDirectory = Environment.getExternalStoragePublicDirectory(
-//                    Environment.DIRECTORY_PICTURES
-//                )
-
-                // Создаем новый файл, используя указанный каталог и имя
-//                val fileToTransfer = File(fileDirectory, fileName)
-//                fileToTransfer.setReadable(true, false)
-
                 /*
                     * Instantiate a new FileUriCallback to handle requests for URIs
                     * Нужный коллбэк внизу
-             */
+                */
 
                 val fileUriCallback = FileUriCallback()
 //            // Set the dynamic callback for URI requests.
@@ -209,7 +198,7 @@ class FragmentMain : Fragment() {
         }
     }
 
-    private fun onAcceptData() {
+    fun onAcceptData(tag: String) {
 //        Log.d("M_MainActivity", "onAccept")
         val gson = Gson()
         val list = Repository.getAccounts()
