@@ -44,7 +44,7 @@ class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     private val avatar: ImageView = itemView.findViewById(R.id.iv_social_avatar)
-    private val id: TextView = itemView.findViewById(R.id.tv_id)
+  //  private val id: TextView = itemView.findViewById(R.id.tv_id)
     private val path: TextView = itemView.findViewById(R.id.tv_path)
 
     fun onBind(data: Account) {
