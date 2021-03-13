@@ -52,7 +52,7 @@ class DataViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .load(data.avatar)
             .apply(imageOption)
             .into(avatar)
-        id.text = data.id.toString()
+//        id.text = data.id.toString()
         path.text = data.path
         path.setOnClickListener {
             val adress = Uri.parse(data.path)
