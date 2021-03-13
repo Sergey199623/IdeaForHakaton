@@ -5,10 +5,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.nfc.NfcAdapter
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
-import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import java.io.File
 
@@ -18,23 +19,40 @@ class MainActivity : Activity() {
     private var mIntent: Intent? = null
 
     private var nfcAdapter: NfcAdapter? = null
+    private var androidBeamAvailable = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val pm = this.packageManager
+        val btnSendData: Button = findViewById(R.id.btnSend)
+        val btnAcceptData: Button = findViewById(R.id.btnAccept)
+
+//        val pm = this.packageManager
         // Проверяем наличие NFC на устройстве
-        if (!pm.hasSystemFeature(PackageManager.FEATURE_NFC)) {
+        androidBeamAvailable = if (!packageManager.hasSystemFeature(PackageManager.FEATURE_NFC)) {
             Toast.makeText(this, getString(R.string.not_has_nfc_hardware), Toast.LENGTH_SHORT)
-                    .show()
+                .show()
+            false
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            false
         } else {
             Toast.makeText(this, getString(R.string.enable_android_nfc), Toast.LENGTH_SHORT)
                     .show()
+            nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+            true
+        }
+
+        btnSendData.setOnClickListener() {
+            onSendData()
+        }
+
+        btnAcceptData.setOnClickListener() {
+            onAcceptData()
         }
     }
 
-    fun onSendData(view: View) {
+    private fun onSendData() {
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this)
 
@@ -54,24 +72,23 @@ class MainActivity : Activity() {
                     .show()
             startActivity(Intent(Settings.ACTION_NFCSHARING_SETTINGS))
         } else -> {
+                // Файл для отправки - пока стоит заглушка
+                val fileName = "wallpaper.png"
 
-            // Файл для отправки - пока стоит заглушка
-            val fileName = "wallpaper.png"
+                // Получить путь к общедоступному каталогу изображений пользователя
+                val fileDirectory = Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_PICTURES
+                )
 
-            // Получить путь к общедоступному каталогу изображений пользователя
-            val fileDirectory = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES
-            )
-
-            // Создаем новый файл, используя указанный каталог и имя
-            val fileToTransfer = File(fileDirectory, fileName)
-            fileToTransfer.setReadable(true, false)
-            nfcAdapter?.setBeamPushUris(arrayOf(Uri.fromFile(fileToTransfer)), this)
-        }
+                // Создаем новый файл, используя указанный каталог и имя
+                val fileToTransfer = File(fileDirectory, fileName)
+                fileToTransfer.setReadable(true, false)
+                nfcAdapter?.setBeamPushUris(arrayOf(Uri.fromFile(fileToTransfer)), this)
+            }
         }
     }
 
-    fun onAcceptData(view: View) {
+    private fun onAcceptData() {
 
     }
 }
