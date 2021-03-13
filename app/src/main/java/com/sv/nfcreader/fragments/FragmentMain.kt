@@ -5,13 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.provider.Settings;
 import android.nfc.NfcAdapter
 import android.nfc.NfcEvent
 import android.nfc.NfcManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -52,7 +52,11 @@ class FragmentMain : Fragment() {
                 false
             }
             else -> {
-                Toast.makeText(activity, getString(R.string.not_has_nfc_hardware), Toast.LENGTH_SHORT)
+                Toast.makeText(
+                    activity,
+                    getString(R.string.not_has_nfc_hardware),
+                    Toast.LENGTH_SHORT
+                )
                     .show()
                 initNfcAdapter()
                 true
@@ -60,7 +64,10 @@ class FragmentMain : Fragment() {
         }
 
         val onAcceptData = view.findViewById<View>(R.id.btnAccept)
-
+        val onSendData = view.findViewById<View>(R.id.btnSend)
+        onSendData?.setOnClickListener {
+            onSendData()
+        }
         onAcceptData?.setOnClickListener {
             findNavController().navigate(R.id.fragmentDataDetails)
         }
@@ -100,7 +107,7 @@ class FragmentMain : Fragment() {
 
         // Проверка, активен ли NFC
         when {
-            nfcAdapter?.isEnabled == true -> {
+            nfcAdapter?.isEnabled == false -> {
 
                 // Если NFC отключен, показываем окно настроек для включения NFC
                 Toast.makeText(activity, getString(R.string.un_enable_nfc), Toast.LENGTH_SHORT)
@@ -120,23 +127,44 @@ class FragmentMain : Fragment() {
 
                 val gson = Gson()
                 val list = listOf(
-                    Account(1,"vk","https://ibb.co/KDBVgX3", "https://vk.com/elonmusk"),
-                    Account(2, "facebook", "https://ibb.co/LN979kn","https://www.facebook.com/elonreevesmusk/"),
+                    Account(1, "vk", "https://ibb.co/KDBVgX3", "https://vk.com/elonmusk"),
+                    Account(
+                        2,
+                        "facebook",
+                        "https://ibb.co/LN979kn",
+                        "https://www.facebook.com/elonreevesmusk/"
+                    ),
                     Account(3, "twitter", "https://ibb.co/sVG9qhp", "https://twitter.com/elonmusk")
                 )
                 val json = gson.toJson(list)
+                Log.d("M_FragmentMain", json)
+
+                val mFileUris = arrayOfNulls<Uri>(10)
+//                val transferFile = "transferimage.jpg"
+                val extDir: File? = requireContext().getExternalFilesDir(null)
+                val requestFile = File(extDir, json)
+                requestFile.setReadable(true, false)
+                // Get a URI for the File and add it to the list of URIs
+                // Get a URI for the File and add it to the list of URIs
+                val fileUri = Uri.fromFile(requestFile)
+                if (fileUri != null) {
+                    mFileUris[0] = fileUri
+                    Log.d("M_FragmentMain", mFileUris[0].toString())
+                } else {
+                    Log.e("M_FragmentMain", "No File URI available for file.")
+                }
 
 
-                val fileName = "wallpaper.png"
+//                val fileName = "wallpaper.png"
 
                 // Получить путь к общедоступному каталогу изображений пользователя
-                val fileDirectory = Environment.getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_PICTURES
-                )
+//                val fileDirectory = Environment.getExternalStoragePublicDirectory(
+//                    Environment.DIRECTORY_PICTURES
+//                )
 
                 // Создаем новый файл, используя указанный каталог и имя
-                val fileToTransfer = File(fileDirectory, fileName)
-                fileToTransfer.setReadable(true, false)
+//                val fileToTransfer = File(fileDirectory, fileName)
+//                fileToTransfer.setReadable(true, false)
 
                 /*
                     * Instantiate a new FileUriCallback to handle requests for URIs
@@ -170,10 +198,10 @@ class FragmentMain : Fragment() {
         val gson = Gson()
         val list = Repository.getAccounts()
         val json = gson.toJson(list)
-        Log.d("M_MainActivity", json)
+        Log.d("M_FragmentMain", json)
         val sType = object : TypeToken<List<Account>>() {}.type
         val otherList = gson.fromJson<List<Account>>(json, sType)
-        Log.d("M_MainActivity", "out = $otherList")
+        Log.d("M_FragmentMain", "out = $otherList")
     }
 
     companion object {
