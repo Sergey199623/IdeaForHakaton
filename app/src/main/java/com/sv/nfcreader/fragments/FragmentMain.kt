@@ -73,7 +73,7 @@ class FragmentMain : Fragment() {
         onSendData?.setOnClickListener {
             android.os.Handler().postDelayed({ progressBar.visibility = View.VISIBLE; }, 1000)
             onSendData()
-            android.os.Handler().postDelayed({ progressBar.visibility = View.GONE; Toast.makeText(
+            android.os.Handler().postDelayed({ progressBar.visibility = View.INVISIBLE; Toast.makeText(
                 activity, "Отправка завершена!", Toast.LENGTH_SHORT)
                 .show() },
                 5000)
