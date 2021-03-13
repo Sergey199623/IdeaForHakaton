@@ -17,6 +17,10 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior.getTag
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.sv.nfcreader.data.AccountTemp
+import com.sv.nfcreader.data.repo.Repository
 import java.io.File
 
 class MainActivity : Activity() {
@@ -43,7 +47,7 @@ class MainActivity : Activity() {
             false
         } else {
             Toast.makeText(this, getString(R.string.enable_android_nfc), Toast.LENGTH_SHORT)
-                    .show()
+                .show()
             initNfcAdapter()
             true
         }
@@ -95,22 +99,34 @@ class MainActivity : Activity() {
 
                 // Если NFC отключен, показываем окно настроек для включения NFC
                 Toast.makeText(this, getString(R.string.un_enable_nfc), Toast.LENGTH_SHORT)
-                        .show()
-                startActivity(Intent(Settings.ACTION_NFC_SETTINGS))
-            } nfcAdapter?.isNdefPushEnabled == true -> {
-            // Если Android Beam отключен, показываем настройки для включения Android Beam
-            Toast.makeText(
-                    this, getString(R.string.need_enable_android_beam), Toast.LENGTH_SHORT
-            )
                     .show()
-            startActivity(Intent(Settings.ACTION_NFCSHARING_SETTINGS))
-        } else -> {
+                startActivity(Intent(Settings.ACTION_NFC_SETTINGS))
+            }
+            nfcAdapter?.isNdefPushEnabled == true -> {
+                // Если Android Beam отключен, показываем настройки для включения Android Beam
+                Toast.makeText(
+                    this, getString(R.string.need_enable_android_beam), Toast.LENGTH_SHORT
+                )
+                    .show()
+                startActivity(Intent(Settings.ACTION_NFCSHARING_SETTINGS))
+            }
+            else -> {
                 // Файл для отправки - пока стоит заглушка
+
+                val gson = Gson()
+                val list = listOf(
+                    AccountTemp(1, "https://vk.com/elonmusk"),
+                    AccountTemp(2, "https://www.facebook.com/elonreevesmusk/"),
+                    AccountTemp(3, "https://twitter.com/elonmusk")
+                )
+                val json = gson.toJson(list)
+
+
                 val fileName = "wallpaper.png"
 
                 // Получить путь к общедоступному каталогу изображений пользователя
                 val fileDirectory = Environment.getExternalStoragePublicDirectory(
-                        Environment.DIRECTORY_PICTURES
+                    Environment.DIRECTORY_PICTURES
                 )
 
                 // Создаем новый файл, используя указанный каталог и имя
@@ -122,9 +138,9 @@ class MainActivity : Activity() {
                     * Нужный коллбэк внизу
              */
 
-            val fileUriCallback = FileUriCallback()
+                val fileUriCallback = FileUriCallback()
 //            // Set the dynamic callback for URI requests.
-            nfcAdapter?.setBeamPushUrisCallback(fileUriCallback, this@MainActivity)
+                nfcAdapter?.setBeamPushUrisCallback(fileUriCallback, this@MainActivity)
 
             }
         }
@@ -145,7 +161,14 @@ class MainActivity : Activity() {
     }
 
     private fun onAcceptData() {
-
+//        Log.d("M_MainActivity", "onAccept")
+        val gson = Gson()
+        val list = Repository.getAccounts()
+        val json = gson.toJson(list)
+//        Log.d("M_MainActivity", json)
+        val sType = object : TypeToken<List<AccountTemp>>() {}.type
+        val otherList = gson.fromJson<List<AccountTemp>>(json, sType)
+        Log.d("M_MainActivity", "out = $otherList")
     }
 
     companion object {
