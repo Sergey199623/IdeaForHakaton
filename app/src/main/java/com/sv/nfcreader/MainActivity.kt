@@ -32,6 +32,14 @@ class MainActivity :  AppCompatActivity(), NfcAdapter.CreateNdefMessageCallback 
         nfcAdapter?.setNdefPushMessageCallback(this, this)
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Check to see that the Activity started due to an Android Beam
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
+            processIntent(intent)
+        }
+    }
+
     override fun createNdefMessage(p0: NfcEvent?): NdefMessage {
         val text = "Beam me up, Android!\n\n" +
                 "Beam Time: " + System.currentTimeMillis()
